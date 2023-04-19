@@ -18,3 +18,8 @@ DAV On
 </Directory>
 
 systemctl restart apache2
+
+# create a user and define password to access webdav
+htdigest -c /etc/apache2/users.password webdav armando
+# create a user and define password to access webdav from basic*
+htpasswd -c /etc/apache2/.users.password armando
