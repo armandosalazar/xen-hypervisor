@@ -58,7 +58,8 @@ case $opt in
 		read date # 2023-04-25
 		read username
 		usermod --expiredate $date $username
-		/?)
+		*)
+		echo "Opción invalida"
 		;;
 	esac
 	echo "Fecha de exipiración de la cuenta de usuario"
@@ -89,6 +90,15 @@ case $opt in
 	;;
 	6)
 	# Contraseñas
+	case opt in
+		1)
+			;;
+		2)
+			;;
+		3)
+			;;
+		*)
+			;;
 	echo "Fecha de expiración de contraseña de usuario"
 	# instalar chage
 	read user
@@ -115,6 +125,18 @@ case $opt in
 	groupadd $group
 	;;
 	10)
+		echo ""
+		case opt in
+			1)
+				;;
+			2)
+				;;
+			3)
+				;;
+			*)
+				echo "Opción invalida"
+				;;
+		esac
 	echo "Modificar nombre del grupo"
 	groupmod $group $new_group_name
 	echo "Agregar usuario a un grupo"
@@ -135,7 +157,7 @@ case $opt in
 	12)
 	exit
 	;;
-	/?)
+	*)
 	echo "Opción invalida"
 	;;
 esac
