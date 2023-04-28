@@ -17,7 +17,7 @@ echo -n "Introduce una opción: "
 
 read opt
 
-echo "";
+echo ""
 case $opt in
 	1)
 	echo "*** Crear usuario ***"
@@ -58,6 +58,7 @@ case $opt in
 		read date # 2023-04-25
 		read username
 		usermod --expiredate $date $username
+		;;
 		*)
 		echo "Opción invalida"
 		;;
@@ -74,69 +75,64 @@ case $opt in
 	passwd $user
 	;;
 	3)
-	# Eliminar un usuario
-	read user
-	userdel $user
-	;;
+		# Eliminar un usuario
+		read user
+		userdel $user
+		;;
 	4)
-	# Eliminar el usuario y sus archivos
-	read user
-	userdel -rf $user
-	;;
+		# Eliminar el usuario y sus archivos
+		read user
+		userdel -rf $user
+		;;
 	5)
-	# Ver a que grupo pertenece un usuario
-	read user
-	groups $user
-	;;
+		# Ver a que grupo pertenece un usuario
+		read user
+		groups $user
+		;;
 	6)
-	# Contraseñas
-	case opt in
-		1)
-			;;
-		2)
-			;;
-		3)
-			;;
-		*)
-			;;
-	echo "Fecha de expiración de contraseña de usuario"
-	# instalar chage
-	read user
-	chage --list $user
-	echo "Número de días para la expiración de contraseña de usuario"
-	read days
-	read user
-	chage -M $days $user
-	echo "Contraseña expirada"
-	read user
-	chage -d 0 $user
-	;;
-	7)
-	# Editar usuarios registrados
-	nano /etc/passwd
-	;;
-	8)
-	# Ver grupos
-	nano /etc/group
-	;;
-	9)
-	# Añadir a grupo
-	read group
-	groupadd $group
-	;;
-	10)
-		echo ""
+		# Contraseñas
 		case opt in
-			1)
-				;;
-			2)
-				;;
-			3)
-				;;
-			*)
-				echo "Opción invalida"
-				;;
+		1) ;;
+		2) ;;
+		3) ;;
+		*) ;;
 		esac
+		echo "Fecha de expiración de contraseña de usuario"
+		# instalar chage
+		read user
+		chage --list $user
+		echo "Número de días para la expiración de contraseña de usuario"
+		read days
+		read user
+		chage -M $days $user
+		echo "Contraseña expirada"
+		read user
+		chage -d 0 $user
+		;;
+	7)
+		# Editar usuarios registrados
+		nano /etc/passwd
+		;;
+	8)
+		# Ver grupos
+		nano /etc/group
+		;;
+	9)
+		# Añadir a grupo
+		read group
+		groupadd $group
+		;;
+	10)
+	# Modificar usuarios
+	echo ""
+	case opt in
+	1) ;;
+	2) ;;
+	3) ;;
+	*)
+	echo "Opción invalida"
+	;;
+	esac
 	echo "Modificar nombre del grupo"
 	groupmod $group $new_group_name
 	echo "Agregar usuario a un grupo"
@@ -155,6 +151,7 @@ case $opt in
 	groupdel $group
 	;;
 	12)
+	echo "Bye!"
 	exit
 	;;
 	*)
