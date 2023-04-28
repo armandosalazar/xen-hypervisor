@@ -12,15 +12,16 @@ mkdir /var/www/webdav
 # chown www-data:www-data /var/www/webdav/ # creo que no es necesaria esta línea
 
 nano /etc/apache2/sites-available/000-default.conf # edit this file and add:
+# for normal configuration add to 000-default.conf
 Alias /webdav /var/www/webdav
 <Directory /var/www/webdav>
-DAV On
+	DAV On
 </Directory>
 
 systemctl restart apache2
 
 # create a user and define password to access webdav
-htdigest -c /etc/apache2/users.password webdav armando
+htdigest -c /etc/apache2/users.password webdav armando # other way of authentication
 # create a user and define password to access webdav from basic*
 htpasswd -c /etc/apache2/.users.password armando
 
