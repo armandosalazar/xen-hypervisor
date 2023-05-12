@@ -1,7 +1,13 @@
 #!/bin/bash
 
-echo "=== Opciones ==="
-echo "1) Crear usuario"
+# Colors and Styles
+MENU="\e[1;3;32;44m"
+OPTION="\e[1;3;32m"
+INPUT="\e[1;32m"
+END="\e[0m"
+
+echo -e "${MENU} === Opciones === ${END}"
+echo -e "${OPTION}1) Crear usuario"
 echo "2) Modificar usuario"
 echo "3) Eliminar usuario"
 echo "4) Eliminar usuario y sus archivos"
@@ -12,68 +18,69 @@ echo "8) Listar grupos disponibles"
 echo "9) Crear un nuevo grupo"
 echo "10) Modificar un grupo"
 echo "11) Eliminar un grupo"
-echo "12) Salir"
-echo -n "Introduce una opción: "
+echo -e "12) Salir${END}"
+echo -ne "${INPUT}Introduce una opción: "
 
 read opt
 
+clear
 echo ""
 case $opt in
 	1)
-	echo "*** Crear usuario ***"
-	echo -n "Escribe el nombre del nuevo usuario: "
-	read user
-	adduser $user
-	passwd $user
-	;;
+		echo "*** Crear usuario ***"
+		echo -n "Escribe el nombre del nuevo usuario: "
+		read user
+		sudo adduser $user
+		passwd $user
+		;;
 	2)
-	echo "*** Modificar usuario ***"
-	echo "1) Nombre de usuario"
-	echo "2) Modificar diractorios"
-	echo "3) Agregar usuario a uno o más grupos"
-	echo "4) Fecha de expiración de la cuenta de usuario"
-	echo "5) Bloquear contraseña de usuario"
-	echo "6) Desbloquear contraseña de usuario"
-	echo -n "Introduce una opción: "
-	read opt
-	case $opt in
-		1)
-		echo -n "Escribe el nombre del usuario que desea modificar: "
+		echo -e "$MENU*** Modificar usuario ***$END"
+		echo "1) Nombre de usuario"
+		echo "2) Modificar diractorios"
+		echo "3) Agregar usuario a uno o más grupos"
+		echo "4) Fecha de expiración de la cuenta de usuario"
+		echo "5) Bloquear contraseña de usuario"
+		echo "6) Desbloquear contraseña de usuario"
+		echo -n "Introduce una opción: "
+		read opt
+		case $opt in
+			1)
+				echo -n "Escribe el nombre del usuario que desea modificar: "
+				read username
+				read new_username
+				usermod -l $username $new_username
+				;;
+			2)
+				echo -n "Introduce el directorio: "
+				read directory
+				echo -n "Introduce el usuario: "
+				read username
+				usermod -d $directory -m $username
+				;;
+			3)
+				read groups
+				usermod G $groups
+				;;
+			4)
+				read date # 2023-04-25
+				read username
+				usermod --expiredate $date $username
+				;;
+			*)
+				echo "Opción invalida"
+				;;
+		esac
+		echo "Fecha de exipiración de la cuenta de usuario"
+		echo "Bloquear contraseña de usuario"
 		read username
-		read new_username
-		usermod -l $username $new_username
-		;;
-		2)
-		echo -n "Introduce el directorio: "
-		read directory
-		echo -n "Introduce el usuario: "
+		usermod --lock $username
+		echo "Desbloquear contraseña de usuario"
 		read username
-		usermod -d $directory -m $username
+		usermod --unlock $username
+		# Modificar contraseña
+		read user
+		passwd $user
 		;;
-		3)
-		read groups
-		usermod G $groups
-		;;
-		4)
-		read date # 2023-04-25
-		read username
-		usermod --expiredate $date $username
-		;;
-		*)
-		echo "Opción invalida"
-		;;
-	esac
-	echo "Fecha de exipiración de la cuenta de usuario"
-	echo "Bloquear contraseña de usuario"
-	read username
-	usermod --lock $username
-	echo "Desbloquear contraseña de usuario"
-	read username
-	usermod --unlock $username
-	# Modificar contraseña
-	read user
-	passwd $user
-	;;
 	3)
 		# Eliminar un usuario
 		read user
@@ -90,12 +97,21 @@ case $opt in
 		groups $user
 		;;
 	6)
+		echo -e "$MENU*** Modificar usuario ***$END"
+		echo "1) Nombre de usuario"
+		echo "2) Modificar diractorios"
+		echo "3) Agregar usuario a uno o más grupos"
+		echo "4) Fecha de expiración de la cuenta de usuario"
+		echo "5) Bloquear contraseña de usuario"
+		echo "6) Desbloquear contraseña de usuario"
+		echo -n "Introduce una opción: "
+		read opt
 		# Contraseñas
 		case opt in
-		1) ;;
-		2) ;;
-		3) ;;
-		*) ;;
+			1) ;;
+			2) ;;
+			3) ;;
+			*) ;;
 		esac
 		echo "Fecha de expiración de contraseña de usuario"
 		# instalar chage
@@ -123,38 +139,38 @@ case $opt in
 		groupadd $group
 		;;
 	10)
-	# Modificar usuarios
-	echo ""
-	case opt in
-	1) ;;
-	2) ;;
-	3) ;;
-	*)
-	echo "Opción invalida"
-	;;
-	esac
-	echo "Modificar nombre del grupo"
-	groupmod $group $new_group_name
-	echo "Agregar usuario a un grupo"
-	echo "Eliminar un usuario de un gropo"
-	read user
-	read group
-	gpasswd -d $user $group
-	echo "Agregar usuario"
-	read user
-	read group
-	gpasswd -a $user $group
-	;;
+		# Modificar usuarios
+		echo ""
+		case opt in
+			1) ;;
+			2) ;;
+			3) ;;
+			*)
+				echo "Opción invalida"
+				;;
+		esac
+		echo "Modificar nombre del grupo"
+		groupmod $group $new_group_name
+		echo "Agregar usuario a un grupo"
+		echo "Eliminar un usuario de un gropo"
+		read user
+		read group
+		gpasswd -d $user $group
+		echo "Agregar usuario"
+		read user
+		read group
+		gpasswd -a $user $group
+		;;
 	11)
-	# Eliminar grupo
-	read group
-	groupdel $group
-	;;
+		# Eliminar grupo
+		read group
+		groupdel $group
+		;;
 	12)
-	echo "Bye!"
-	exit
-	;;
+		echo "Bye!"
+		exit
+		;;
 	*)
-	echo "Opción invalida"
-	;;
+		echo "Opción invalida"
+		;;
 esac
