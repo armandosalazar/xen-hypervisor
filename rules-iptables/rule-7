@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo iptables -F
+echo iptables -t nat -F
+echo iptables -t nat -A PREROUTING -p tcp --dport 5522 -j DNAT --to-destination 10.0.0.3:22
+echo iptables -A INPUT ! -s 192.168.1.12 -p tcp --dport 22 -j DROP
+iptables -F
+iptables -t nat -F
+iptables -t nat -A PREROUTING -p tcp --dport 5522 -j DNAT --to-destination 10.0.0.3:22
+iptables -A INPUT ! -s 192.168.1.12 -p tcp --dport 22 -j DROP

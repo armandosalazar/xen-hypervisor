@@ -1,0 +1,25 @@
+#!/bin/bash
+
+interface=$(nmcli d | grep wifi | cut -d ' ' -f1)
+
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+iptables -P OUTPUT DROP
+
+iptables -t filter -A INPUT -i $interface -j ACCEPT
+iptables -t nat -A OUTPUT -o $interface -j ACCEPT
+iptables -t filter -A FORWARD -i $interface -j ACCEPT
+iptables -t filter -A FORWARD -i $interface -j ACCEPT
+
+iptables -t nat -A PREROUTING -i $interface -p tcp --dport 80 -j DNAT --to 10.0.0.3:80
+iptables -t nat -A PREROUTING -i $interface -p tcp --dport 8000 -j DNAT --to 10.0.0.5:80
+iptables -t nat -A PREROUTING -i $interface -p tcp --dport 21 -j DNAT --to 10.0.0.2:21
+
+# echo iptables -t nat -A INPUT -i $interface -j ACCEPT
+# echo iptables -t nat -A INPUT -o $interface -j ACCEPT
+# iptables -t nat -A FORWARD -i $interface -j ACCEPT
+# echo iptables -t nat -A FORWARD -o $interface -j ACCEPT
+# echo iptables -t nat -A OUTPUT -i $interface -j ACCEPT
+# echo iptables -t nat -A OUTPUT -o $interface -j ACCEPT
+
+# echo iptables -t nat -A PREROUTING -i $interface -p tcp --dport 80 -j DNAT --to 10.0.0.2

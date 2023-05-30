@@ -1,0 +1,6 @@
+#!/bin/bash
+
+interface=$(nmcli d | grep wifi | cut -d ' ' -f1)
+
+echo iptables -t nat -A PREROUTING -i $interface -p tcp --dport 80 -j DNAT --to 10.0.0.3:80
+

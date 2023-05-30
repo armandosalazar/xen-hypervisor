@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# ip_accept=$(hostname -I | cut -d ' ' -f1)
+interface=$(nmcli d | grep wifi | cut -d ' ' -f1)
+ip_accept=192.168.1.18
+ip_friend=192.168.1.174
+
+# echo iptables -t nat -A PREROUTING -p tcp -s $ip_accept --dport 80 -j DNAT --to-destination 10.0.0.3:80
+# Con -I la coloca con prioridad
+iptables -t nat -I PREROUTING -p tcp -s $ip_accept --dport 21 -j DNAT --to-destination 10.0.0.2:21
+iptables -t nat -I PREROUTING -p tcp -s $ip_accept --dport 80 -j DNAT --to-destination 10.0.0.3:80
+iptables -t nat -I PREROUTING -p tcp -s $ip_accept --dport 8000 -j DNAT --to-destination 10.0.0.5:80
+iptables -t nat -A PREROUTING -p tcp -j DNAT --to $ip_friend:80
+iptables -t nat -A POSTROUTING -o $interface -j MASQUERADE
+
+
+echo iptables -t nat -I PREROUTING -p tcp -s $ip_accept --dport 21 -j DNAT --to-destination 10.0.0.2:21
+echo iptables -t nat -I PREROUTING -p tcp -s $ip_accept --dport 80 -j DNAT --to-destination 10.0.0.3:80
+echo iptables -t nat -I PREROUTING -p tcp -s $ip_accept --dport 8000 -j DNAT --to-destination 10.0.0.5:80
+echo iptables -t nat -A PREROUTING -p tcp -j DNAT --to $ip_friend:80
+echo iptables -t nat -A POSTROUTING -o $interface -j MASQUERADE

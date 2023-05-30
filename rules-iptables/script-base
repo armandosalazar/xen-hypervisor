@@ -1,0 +1,3 @@
+#!/bin/bash
+
+iptables -T [nombre tabla] -acción [cadena] [criterio] -j [acción a realizar]
