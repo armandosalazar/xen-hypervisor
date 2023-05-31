@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# https://techexpert.tips/es/apache-es/habilitar-https-en-apache/
+
 sysctl net.ipv4.ip_forward=1
 
 # iptables -A FORWARD -i xenbr0 -j ACCEPT
